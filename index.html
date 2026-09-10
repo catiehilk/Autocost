@@ -1,232 +1,1195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoCost - Car Payment Calculator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>AutoCost — Know the True Cost of Your Car</title>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
-            color: #172033;
-        }
+<meta name="description" content="Calculate the true cost of owning a car including payments, taxes, insurance, fuel, maintenance and depreciation.">
 
-        .container {
-            max-width: 700px;
-            margin: 60px auto;
-            padding: 20px;
-        }
+<style>
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .header h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: #f6f7f9;
+    color: #15171a;
+}
 
-        .header p {
-            color: #687386;
-            font-size: 18px;
-        }
+.container {
+    width: 92%;
+    max-width: 900px;
+    margin: auto;
+    padding: 45px 0 80px;
+}
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
+.header {
+    text-align: center;
+    margin-bottom: 38px;
+}
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.logo {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #777e87;
+    margin-bottom: 12px;
+}
 
-        input, select {
-            width: 100%;
-            padding: 13px;
-            margin-bottom: 20px;
-            border: 1px solid #d5dbe5;
-            border-radius: 8px;
-            font-size: 16px;
-        }
+.header h1 {
+    font-size: 44px;
+    letter-spacing: -2px;
+    margin: 0;
+}
 
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            background: #172033;
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.header p {
+    color: #707780;
+    font-size: 17px;
+    margin-top: 12px;
+}
 
-        button:hover {
-            opacity: 0.9;
-        }
+.card {
+    background: white;
+    border: 1px solid #e3e6ea;
+    border-radius: 18px;
+    padding: 30px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.04);
+}
 
-        .results {
-            display: none;
-            margin-top: 25px;
-            padding: 25px;
-            background: #f0f4f8;
-            border-radius: 12px;
-        }
+.section-title {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
 
-        .main-result {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+.section-subtitle {
+    font-size: 13px;
+    color: #7a8088;
+    margin-top: -15px;
+    margin-bottom: 22px;
+}
 
-        .main-result p {
-            margin: 0;
-            color: #687386;
-        }
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
 
-        .main-result h2 {
-            font-size: 38px;
-            margin: 5px 0;
-        }
+.input-group {
+    margin-bottom: 20px;
+}
 
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #dce2e9;
-        }
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 650;
+    margin-bottom: 8px;
+}
 
-        .result-row:last-child {
-            border-bottom: none;
-        }
-    </style>
+input,
+select {
+    width: 100%;
+    height: 47px;
+    border: 1px solid #dce0e5;
+    border-radius: 9px;
+    padding: 0 13px;
+    font-size: 15px;
+    background: white;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #15171a;
+    box-shadow: 0 0 0 3px rgba(21,23,26,.07);
+}
+
+button {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 10px;
+    background: #15171a;
+    color: white;
+    font-size: 16px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .9;
+}
+
+.secondary-button {
+    background: white;
+    color: #15171a;
+    border: 1px solid #dce0e5;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* RESULTS */
+
+.total-card {
+    background: #15171a;
+    color: white;
+    border-radius: 17px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.total-card p {
+    color: #b8bdc5;
+    margin: 0;
+    font-size: 14px;
+}
+
+.total-card h2 {
+    font-size: 45px;
+    letter-spacing: -1.5px;
+    margin: 7px 0;
+}
+
+.total-card span {
+    color: #aeb4bc;
+    font-size: 13px;
+}
+
+.breakdown {
+    border: 1px solid #e3e6ea;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 18px;
+    border-bottom: 1px solid #eceef1;
+    font-size: 15px;
+}
+
+.row:last-child {
+    border-bottom: 0;
+}
+
+.row span {
+    color: #6e757e;
+}
+
+.row strong {
+    font-weight: 650;
+}
+
+.highlight {
+    background: #f6f7f9;
+}
+
+.affordability {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 13px;
+    background: #f6f7f9;
+}
+
+.affordability h3 {
+    margin: 0 0 7px;
+    font-size: 17px;
+}
+
+.affordability p {
+    margin: 5px 0;
+    color: #697079;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.status {
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.compare-card {
+    border: 1px solid #e3e6ea;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.compare-card h3 {
+    margin-top: 0;
+}
+
+.compare-result {
+    text-align: center;
+    padding: 18px 0;
+}
+
+.compare-result .number {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.small-note {
+    font-size: 12px;
+    color: #8a9097;
+    line-height: 1.5;
+    margin-top: 18px;
+}
+
+.action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+footer {
+    text-align: center;
+    color: #969ca3;
+    font-size: 12px;
+    margin-top: 35px;
+}
+
+@media (max-width: 650px) {
+
+    .container {
+        width: 94%;
+        padding-top: 30px;
+    }
+
+    .header h1 {
+        font-size: 36px;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    .grid,
+    .compare-grid,
+    .action-row {
+        grid-template-columns: 1fr;
+    }
+
+    .total-card h2 {
+        font-size: 36px;
+    }
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="header">
-        <h1>AutoCost</h1>
-        <p>Find out what your car payment will really cost.</p>
+<header class="header">
+    <div class="logo">AutoCost</div>
+    <h1>Know the true cost of your car.</h1>
+    <p>Go beyond the monthly payment.</p>
+</header>
+
+
+<!-- MAIN CALCULATOR -->
+
+<div class="card">
+
+    <div class="section-title">Vehicle & Loan</div>
+
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Car Price ($)</label>
+            <input id="price" type="number" placeholder="40000">
+        </div>
+
+        <div class="input-group">
+            <label>Down Payment ($)</label>
+            <input id="down" type="number" placeholder="5000">
+        </div>
+
+        <div class="input-group">
+            <label>Interest Rate (APR %)</label>
+            <input id="apr" type="number" step="0.01" placeholder="6.5">
+        </div>
+
+        <div class="input-group">
+            <label>Loan Term</label>
+            <select id="term">
+                <option value="36">36 months</option>
+                <option value="48">48 months</option>
+                <option value="60" selected>60 months</option>
+                <option value="72">72 months</option>
+                <option value="84">84 months</option>
+            </select>
+        </div>
+
     </div>
 
-    <div class="card">
 
-        <label for="price">Car Price</label>
-        <input type="number" id="price" placeholder="40000">
+    <div class="section-title">Taxes & Fees</div>
 
-        <label for="down">Down Payment</label>
-        <input type="number" id="down" placeholder="5000">
+    <div class="grid">
 
-        <label for="apr">Interest Rate (APR %)</label>
-        <input type="number" id="apr" step="0.01" placeholder="6.5">
+        <div class="input-group">
+            <label>Sales Tax (%)</label>
+            <input id="tax" type="number" step="0.01" placeholder="8.5">
+        </div>
 
-        <label for="term">Loan Term</label>
-        <select id="term">
-            <option value="36">36 months</option>
-            <option value="48">48 months</option>
-            <option value="60" selected>60 months</option>
-            <option value="72">72 months</option>
-            <option value="84">84 months</option>
-        </select>
+        <div class="input-group">
+            <label>Annual Registration / Fees ($)</label>
+            <input id="registration" type="number" placeholder="400">
+        </div>
 
-        <button onclick="calculate()">Calculate Payment</button>
+    </div>
 
-        <div class="results" id="results">
 
-            <div class="main-result">
-                <p>Estimated Monthly Payment</p>
-                <h2 id="monthly">$0</h2>
+    <div class="section-title">Monthly Expenses</div>
+
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Insurance ($ / month)</label>
+            <input id="insurance" type="number" placeholder="200">
+        </div>
+
+        <div class="input-group">
+            <label>Maintenance ($ / month)</label>
+            <input id="maintenance" type="number" placeholder="75">
+        </div>
+
+    </div>
+
+
+    <div class="section-title">Fuel / Charging</div>
+
+    <div class="section-subtitle">
+        Enter your driving habits to estimate your monthly fuel cost.
+    </div>
+
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Vehicle Type</label>
+            <select id="fuelType" onchange="updateFuelLabels()">
+                <option value="gas">Gas</option>
+                <option value="ev">Electric</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label id="efficiencyLabel">MPG</label>
+            <input id="efficiency" type="number" placeholder="30">
+        </div>
+
+        <div class="input-group">
+            <label>Annual Miles</label>
+            <input id="miles" type="number" placeholder="12000">
+        </div>
+
+        <div class="input-group">
+            <label id="fuelPriceLabel">Gas Price ($ / gallon)</label>
+            <input id="fuelPrice" type="number" step="0.01" placeholder="4.50">
+        </div>
+
+    </div>
+
+
+    <div class="section-title">Depreciation</div>
+
+    <div class="section-subtitle">
+        Estimated percentage of the vehicle's value lost per year.
+    </div>
+
+    <div class="input-group">
+        <label>Estimated Annual Depreciation (%)</label>
+        <input id="depreciation" type="number" step="0.1" placeholder="15">
+    </div>
+
+
+    <button onclick="calculate()">
+        Calculate True Cost
+    </button>
+
+    <div class="action-row">
+
+        <button class="secondary-button" onclick="saveCalculation()">
+            Save Calculation
+        </button>
+
+        <button class="secondary-button" onclick="shareCalculation()">
+            Share Calculation
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- RESULTS -->
+
+<div class="card hidden" id="results">
+
+    <div class="total-card">
+
+        <p>Estimated True Monthly Cost</p>
+
+        <h2 id="trueCost">$0</h2>
+
+        <span>including ownership costs</span>
+
+    </div>
+
+
+    <div class="section-title">
+        Monthly Breakdown
+    </div>
+
+    <div class="breakdown">
+
+        <div class="row">
+            <span>Loan Payment</span>
+            <strong id="monthly">$0</strong>
+        </div>
+
+        <div class="row">
+            <span>Insurance</span>
+            <strong id="insuranceResult">$0</strong>
+        </div>
+
+        <div class="row">
+            <span>Fuel / Charging</span>
+            <strong id="fuelResult">$0</strong>
+        </div>
+
+        <div class="row">
+            <span>Maintenance</span>
+            <strong id="maintenanceResult">$0</strong>
+        </div>
+
+        <div class="row">
+            <span>Registration / Fees</span>
+            <strong id="registrationResult">$0</strong>
+        </div>
+
+        <div class="row">
+            <span>Depreciation</span>
+            <strong id="depreciationResult">$0</strong>
+        </div>
+
+        <div class="row highlight">
+            <span>Sales Tax</span>
+            <strong id="taxResult">$0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="affordability">
+
+        <h3>Can you afford this car?</h3>
+
+        <p>
+            Enter your annual income below to see how this vehicle compares
+            with your gross monthly income.
+        </p>
+
+        <div class="input-group">
+            <label>Annual Gross Income ($)</label>
+            <input id="income" type="number" placeholder="75000"
+                   oninput="calculateAffordability()">
+        </div>
+
+        <p id="incomeResult"></p>
+
+        <div class="status" id="affordabilityStatus"></div>
+
+    </div>
+
+
+    <div class="section-title" style="margin-top:30px;">
+        Long-Term Cost
+    </div>
+
+    <div class="breakdown">
+
+        <div class="row">
+            <span>Estimated 1-Year Cost</span>
+            <strong id="oneYear">$0</strong>
+        </div>
+
+        <div class="row">
+            <span>Estimated 5-Year Cost</span>
+            <strong id="fiveYear">$0</strong>
+        </div>
+
+    </div>
+
+
+    <p class="small-note">
+        AutoCost provides estimates for informational purposes only.
+        Actual financing, taxes, insurance, fuel, maintenance,
+        registration and depreciation vary by vehicle, location and driver.
+    </p>
+
+</div>
+
+
+<!-- COMPARISON -->
+
+<div class="card">
+
+    <div class="section-title">
+        Compare Two Cars
+    </div>
+
+    <div class="section-subtitle">
+        See which vehicle has the lower estimated monthly ownership cost.
+    </div>
+
+
+    <div class="compare-grid">
+
+        <div class="compare-card">
+
+            <h3>Car A</h3>
+
+            <div class="input-group">
+                <label>Car Name</label>
+                <input id="carAName" placeholder="BMW 3 Series">
             </div>
 
-            <div class="result-row">
-                <span>Amount Financed</span>
-                <strong id="financed">$0</strong>
+            <div class="input-group">
+                <label>Monthly True Cost ($)</label>
+                <input id="carACost" type="number" placeholder="1000">
             </div>
 
-            <div class="result-row">
-                <span>Total Interest</span>
-                <strong id="interest">$0</strong>
+        </div>
+
+
+        <div class="compare-card">
+
+            <h3>Car B</h3>
+
+            <div class="input-group">
+                <label>Car Name</label>
+                <input id="carBName" placeholder="Toyota Camry">
             </div>
 
-            <div class="result-row">
-                <span>Total Loan Payments</span>
-                <strong id="total">$0</strong>
+            <div class="input-group">
+                <label>Monthly True Cost ($)</label>
+                <input id="carBCost" type="number" placeholder="650">
             </div>
 
         </div>
 
     </div>
 
+    <button onclick="compareCars()">
+        Compare Cars
+    </button>
+
+
+    <div id="comparisonResult" class="compare-result hidden">
+
+        <div id="comparisonText"></div>
+
+    </div>
+
 </div>
+
+
+<footer>
+    © 2026 AutoCost · Estimates for informational purposes only
+</footer>
+
+</div>
+
 
 <script>
 
+/* -------------------------
+   HELPER FUNCTIONS
+------------------------- */
+
+function money(number) {
+
+    return "$" + Number(number).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+}
+
+
+function value(id) {
+
+    return parseFloat(document.getElementById(id).value) || 0;
+
+}
+
+
+/* -------------------------
+   FUEL LABELS
+------------------------- */
+
+function updateFuelLabels() {
+
+    const type = document.getElementById("fuelType").value;
+
+    const efficiencyLabel =
+        document.getElementById("efficiencyLabel");
+
+    const fuelPriceLabel =
+        document.getElementById("fuelPriceLabel");
+
+    const efficiency =
+        document.getElementById("efficiency");
+
+    const fuelPrice =
+        document.getElementById("fuelPrice");
+
+
+    if (type === "ev") {
+
+        efficiencyLabel.textContent =
+            "Efficiency (miles / kWh)";
+
+        fuelPriceLabel.textContent =
+            "Electricity Price ($ / kWh)";
+
+        efficiency.placeholder = "3.5";
+
+        fuelPrice.placeholder = "0.25";
+
+    } else {
+
+        efficiencyLabel.textContent = "MPG";
+
+        fuelPriceLabel.textContent =
+            "Gas Price ($ / gallon)";
+
+        efficiency.placeholder = "30";
+
+        fuelPrice.placeholder = "4.50";
+
+    }
+
+}
+
+
+/* -------------------------
+   MAIN CALCULATOR
+------------------------- */
+
 function calculate() {
 
-    const price = parseFloat(document.getElementById("price").value);
-    const down = parseFloat(document.getElementById("down").value);
-    const apr = parseFloat(document.getElementById("apr").value);
-    const months = parseInt(document.getElementById("term").value);
+    const price = value("price");
 
-    if (isNaN(price) || isNaN(down) || isNaN(apr)) {
-        alert("Please enter all required information.");
+    const down = value("down");
+
+    const apr = value("apr");
+
+    const months =
+        parseInt(document.getElementById("term").value);
+
+    const taxRate = value("tax");
+
+    const registration = value("registration");
+
+    const insurance = value("insurance");
+
+    const maintenance = value("maintenance");
+
+    const efficiency = value("efficiency");
+
+    const annualMiles = value("miles");
+
+    const fuelPrice = value("fuelPrice");
+
+    const depreciationRate = value("depreciation");
+
+
+    if (price <= 0) {
+
+        alert("Please enter a car price.");
+
         return;
+
     }
 
-    const principal = price - down;
-    const monthlyRate = (apr / 100) / 12;
 
-    let payment;
+    /* TAX */
 
-    if (monthlyRate === 0) {
-        payment = principal / months;
-    } else {
-        payment = principal *
-            (monthlyRate * Math.pow(1 + monthlyRate, months)) /
-            (Math.pow(1 + monthlyRate, months) - 1);
+    const salesTax =
+        price * (taxRate / 100);
+
+
+    /* LOAN */
+
+    const amountFinanced =
+        Math.max(price + salesTax - down, 0);
+
+    const monthlyRate =
+        (apr / 100) / 12;
+
+    let payment = 0;
+
+
+    if (amountFinanced > 0) {
+
+        if (monthlyRate === 0) {
+
+            payment =
+                amountFinanced / months;
+
+        } else {
+
+            payment =
+                amountFinanced *
+                (monthlyRate *
+                Math.pow(1 + monthlyRate, months)) /
+                (Math.pow(1 + monthlyRate, months) - 1);
+
+        }
+
     }
 
-    const totalPayments = payment * months;
-    const totalInterest = totalPayments - principal;
+
+    /* FUEL */
+
+    let monthlyFuel = 0;
+
+    if (efficiency > 0 && annualMiles > 0) {
+
+        if (document.getElementById("fuelType").value === "gas") {
+
+            const gallonsPerYear =
+                annualMiles / efficiency;
+
+            monthlyFuel =
+                (gallonsPerYear * fuelPrice) / 12;
+
+        } else {
+
+            const kwhPerYear =
+                annualMiles / efficiency;
+
+            monthlyFuel =
+                (kwhPerYear * fuelPrice) / 12;
+
+        }
+
+    }
+
+
+    /* REGISTRATION */
+
+    const monthlyRegistration =
+        registration / 12;
+
+
+    /* DEPRECIATION */
+
+    const monthlyDepreciation =
+        (price * (depreciationRate / 100)) / 12;
+
+
+    /* TRUE COST */
+
+    const trueMonthlyCost =
+        payment +
+        insurance +
+        monthlyFuel +
+        maintenance +
+        monthlyRegistration +
+        monthlyDepreciation;
+
+
+    /* DISPLAY */
 
     document.getElementById("monthly").textContent =
-        "$" + payment.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+        money(payment);
 
-    document.getElementById("financed").textContent =
-        "$" + principal.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+    document.getElementById("insuranceResult").textContent =
+        money(insurance);
 
-    document.getElementById("interest").textContent =
-        "$" + totalInterest.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+    document.getElementById("fuelResult").textContent =
+        money(monthlyFuel);
 
-    document.getElementById("total").textContent =
-        "$" + totalPayments.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+    document.getElementById("maintenanceResult").textContent =
+        money(maintenance);
 
-    document.getElementById("results").style.display = "block";
+    document.getElementById("registrationResult").textContent =
+        money(monthlyRegistration);
+
+    document.getElementById("depreciationResult").textContent =
+        money(monthlyDepreciation);
+
+    document.getElementById("taxResult").textContent =
+        money(salesTax);
+
+
+    document.getElementById("trueCost").textContent =
+        money(trueMonthlyCost);
+
+
+    /* LONG TERM */
+
+    document.getElementById("oneYear").textContent =
+        money(trueMonthlyCost * 12);
+
+    document.getElementById("fiveYear").textContent =
+        money(trueMonthlyCost * 60);
+
+
+    document.getElementById("results")
+        .classList.remove("hidden");
+
+
+    /* SAVE DATA */
+
+    localStorage.setItem(
+        "autocostLastCalculation",
+        JSON.stringify({
+            price,
+            down,
+            apr,
+            months,
+            taxRate,
+            registration,
+            insurance,
+            maintenance,
+            efficiency,
+            annualMiles,
+            fuelPrice,
+            depreciationRate,
+            trueMonthlyCost
+        })
+    );
+
 }
+
+
+/* -------------------------
+   AFFORDABILITY
+------------------------- */
+
+function calculateAffordability() {
+
+    const income =
+        value("income");
+
+    if (income <= 0) {
+
+        document.getElementById("incomeResult").textContent = "";
+
+        document.getElementById("affordabilityStatus").textContent = "";
+
+        return;
+
+    }
+
+
+    const monthlyIncome =
+        income / 12;
+
+    const totalCostText =
+        document.getElementById("trueCost").textContent
+        .replace("$", "")
+        .replace(/,/g, "");
+
+    const monthlyCost =
+        parseFloat(totalCostText) || 0;
+
+    const percentage =
+        (monthlyCost / monthlyIncome) * 100;
+
+
+    document.getElementById("incomeResult").textContent =
+        "This car would cost approximately " +
+        percentage.toFixed(1) +
+        "% of your gross monthly income.";
+
+
+    const status =
+        document.getElementById("affordabilityStatus");
+
+
+    if (percentage <= 10) {
+
+        status.textContent =
+            "✓ Relatively comfortable based on this simple guideline.";
+
+    } else if (percentage <= 15) {
+
+        status.textContent =
+            "• Moderate cost. Make sure it fits comfortably with your other expenses.";
+
+    } else if (percentage <= 20) {
+
+        status.textContent =
+            "⚠ This vehicle may take a significant portion of your income.";
+
+    } else {
+
+        status.textContent =
+            "⚠ This vehicle may be expensive relative to your income.";
+
+    }
+
+}
+
+
+/* -------------------------
+   SAVE CALCULATION
+------------------------- */
+
+function saveCalculation() {
+
+    if (!document.getElementById("price").value) {
+
+        alert("Calculate your car cost first.");
+
+        return;
+
+    }
+
+    calculate();
+
+    alert(
+        "Your calculation has been saved on this device."
+    );
+
+}
+
+
+/* -------------------------
+   SHARE CALCULATION
+------------------------- */
+
+function shareCalculation() {
+
+    const price = value("price");
+
+    const down = value("down");
+
+    const apr = value("apr");
+
+    const monthly =
+        document.getElementById("trueCost").textContent;
+
+
+    if (!price) {
+
+        alert("Calculate your car cost first.");
+
+        return;
+
+    }
+
+
+    const text =
+        "AutoCost estimate: $" +
+        price.toLocaleString() +
+        " car, $" +
+        down.toLocaleString() +
+        " down, " +
+        apr +
+        "% APR. Estimated true monthly cost: " +
+        monthly;
+
+
+    if (navigator.share) {
+
+        navigator.share({
+
+            title: "My AutoCost Calculation",
+
+            text: text,
+
+            url: window.location.href
+
+        });
+
+    } else {
+
+        navigator.clipboard.writeText(
+            text + " " + window.location.href
+        );
+
+        alert(
+            "Your calculation has been copied to your clipboard."
+        );
+
+    }
+
+}
+
+
+/* -------------------------
+   COMPARE CARS
+------------------------- */
+
+function compareCars() {
+
+    const nameA =
+        document.getElementById("carAName").value ||
+        "Car A";
+
+    const nameB =
+        document.getElementById("carBName").value ||
+        "Car B";
+
+    const costA =
+        value("carACost");
+
+    const costB =
+        value("carBCost");
+
+
+    if (costA <= 0 || costB <= 0) {
+
+        alert(
+            "Enter the monthly true cost for both cars."
+        );
+
+        return;
+
+    }
+
+
+    const difference =
+        Math.abs(costA - costB);
+
+
+    const result =
+        document.getElementById("comparisonResult");
+
+    const text =
+        document.getElementById("comparisonText");
+
+
+    if (costA < costB) {
+
+        text.innerHTML =
+            "<strong>" +
+            nameA +
+            "</strong> is estimated to cost " +
+            money(difference) +
+            " less per month than " +
+            "<strong>" +
+            nameB +
+            "</strong>.";
+
+    } else if (costB < costA) {
+
+        text.innerHTML =
+            "<strong>" +
+            nameB +
+            "</strong> is estimated to cost " +
+            money(difference) +
+            " less per month than " +
+            "<strong>" +
+            nameA +
+            "</strong>.";
+
+    } else {
+
+        text.innerHTML =
+            "<strong>Both cars have the same estimated monthly cost.</strong>";
+
+    }
+
+
+    result.classList.remove("hidden");
+
+}
+
+
+/* -------------------------
+   LOAD LAST CALCULATION
+------------------------- */
+
+window.addEventListener("load", function() {
+
+    const saved =
+        localStorage.getItem(
+            "autocostLastCalculation"
+        );
+
+    if (!saved) return;
+
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+
+        document.getElementById("price").value =
+            data.price || "";
+
+        document.getElementById("down").value =
+            data.down || "";
+
+        document.getElementById("apr").value =
+            data.apr || "";
+
+        document.getElementById("term").value =
+            data.months || 60;
+
+        document.getElementById("tax").value =
+            data.taxRate || "";
+
+        document.getElementById("registration").value =
+            data.registration || "";
+
+        document.getElementById("insurance").value =
+            data.insurance || "";
+
+        document.getElementById("maintenance").value =
+            data.maintenance || "";
+
+        document.getElementById("efficiency").value =
+            data.efficiency || "";
+
+        document.getElementById("miles").value =
+            data.annualMiles || "";
+
+        document.getElementById("fuelPrice").value =
+            data.fuelPrice || "";
+
+        document.getElementById("depreciation").value =
+            data.depreciationRate || "";
+
+
+    } catch (error) {
+
+        console.log(
+            "Could not load saved calculation."
+        );
+
+    }
+
+});
 
 </script>
 
