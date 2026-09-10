@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoCost - Car Payment Calculator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #687386;
+            font-size: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 20px;
+            border: 1px solid #d5dbe5;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #172033;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background: #f0f4f8;
+            border-radius: 12px;
+        }
+
+        .main-result {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .main-result p {
+            margin: 0;
+            color: #687386;
+        }
+
+        .main-result h2 {
+            font-size: 38px;
+            margin: 5px 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #dce2e9;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>AutoCost</h1>
+        <p>Find out what your car payment will really cost.</p>
+    </div>
+
+    <div class="card">
+
+        <label for="price">Car Price</label>
+        <input type="number" id="price" placeholder="40000">
+
+        <label for="down">Down Payment</label>
+        <input type="number" id="down" placeholder="5000">
+
+        <label for="apr">Interest Rate (APR %)</label>
+        <input type="number" id="apr" step="0.01" placeholder="6.5">
+
+        <label for="term">Loan Term</label>
+        <select id="term">
+            <option value="36">36 months</option>
+            <option value="48">48 months</option>
+            <option value="60" selected>60 months</option>
+            <option value="72">72 months</option>
+            <option value="84">84 months</option>
+        </select>
+
+        <button onclick="calculate()">Calculate Payment</button>
+
+        <div class="results" id="results">
+
+            <div class="main-result">
+                <p>Estimated Monthly Payment</p>
+                <h2 id="monthly">$0</h2>
+            </div>
+
+            <div class="result-row">
+                <span>Amount Financed</span>
+                <strong id="financed">$0</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Total Interest</span>
+                <strong id="interest">$0</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Total Loan Payments</span>
+                <strong id="total">$0</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function calculate() {
+
+    const price = parseFloat(document.getElementById("price").value);
+    const down = parseFloat(document.getElementById("down").value);
+    const apr = parseFloat(document.getElementById("apr").value);
+    const months = parseInt(document.getElementById("term").value);
+
+    if (isNaN(price) || isNaN(down) || isNaN(apr)) {
+        alert("Please enter all required information.");
+        return;
+    }
+
+    const principal = price - down;
+    const monthlyRate = (apr / 100) / 12;
+
+    let payment;
+
+    if (monthlyRate === 0) {
+        payment = principal / months;
+    } else {
+        payment = principal *
+            (monthlyRate * Math.pow(1 + monthlyRate, months)) /
+            (Math.pow(1 + monthlyRate, months) - 1);
+    }
+
+    const totalPayments = payment * months;
+    const totalInterest = totalPayments - principal;
+
+    document.getElementById("monthly").textContent =
+        "$" + payment.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("financed").textContent =
+        "$" + principal.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("interest").textContent =
+        "$" + totalInterest.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("total").textContent =
+        "$" + totalPayments.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("results").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
